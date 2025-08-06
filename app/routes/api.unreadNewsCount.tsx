@@ -11,6 +11,7 @@ export const loader = async ({
   
   const news = await getNews();
   return json(
-    { success: true, count: news.filter(article => !article.isRead).length, request: request.signal }
+    { success: true, count: news.filter(article => !article.isRead).length, request: request.signal },
+    { headers: { "Access-Control-Allow-Origin": "*" }}
   );
 };
