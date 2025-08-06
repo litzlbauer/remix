@@ -1,5 +1,5 @@
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@remix-run/node";
-import { useLoaderData, Link, Form } from "@remix-run/react";
+import { useLoaderData, Link, Form, redirect } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/node";
 
 import { getNewsItem, markNewsAsRead, toggleNewsReadStatus } from "~/data";
@@ -43,15 +43,18 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const intent = formData.get("intent");
 
   if (intent === "toggle-read") {
+    console.log(`Toggling read status for news ID: ${newsId}`);
     const updatedNews = await toggleNewsReadStatus(newsId);
     if (!updatedNews) {
       throw new Response("News article not found", { status: 404 });
     }
-    return json({ news: updatedNews });
+    //return json({ news: updatedNews });
+    return redirect('/news');
   }
 
   return json({ news: null });
 }
+
 
 export default function NewsDetail() {
   const { news } = useLoaderData<typeof loader>();

@@ -57,7 +57,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
           <Outlet/>
         </main>
-        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
