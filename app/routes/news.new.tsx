@@ -4,6 +4,7 @@ import type { MetaFunction } from "@remix-run/node";
 
 import { createNews } from "~/data";
 
+
 export const meta: MetaFunction = () => {
   return [
     { title: "Add News - Create New Article" },

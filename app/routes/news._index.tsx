@@ -1,5 +1,6 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, Link, Outlet } from "@remix-run/react";
+import { useEventStream } from "@remix-sse/client";
 import type { MetaFunction } from "@remix-run/node";
 
 import { getNews } from "~/data";
@@ -22,12 +23,19 @@ export default function NewsIndex() {
   const unreadCount = news.filter(article => !article.isRead).length;
   const readCount = news.filter(article => article.isRead).length;
 
+  
+  
+  // By default this is a string[]
+  const greeting = useEventStream('/emitter', {returnLatestOnly: true})
+
+
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
           Latest News
         </h1>
+        <div>Events: {greeting}</div>
         <Link
           to="/news/new"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"

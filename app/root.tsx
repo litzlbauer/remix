@@ -8,6 +8,7 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
+import { useEventStream } from "@remix-sse/client";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -22,6 +23,10 @@ export const links: LinksFunction = () => [
   },
 ];
 
+// This value is a react state object, and will change everytime
+// an event is emitted
+
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -30,6 +35,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+  
       </head>
       <body>
         <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
@@ -51,6 +57,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   News
                 </a>
               </li>
+              <li>SSE</li>
             </ul>
           </div>
         </nav>
