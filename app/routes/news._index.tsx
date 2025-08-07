@@ -1,9 +1,10 @@
-import { json, type LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, Link, Outlet } from "@remix-run/react";
-import { useEventStream } from "@remix-sse/client";
-import type { MetaFunction } from "@remix-run/node";
+import { getNews, NewsRecord } from '~/data';
 
-import { getNews } from "~/data";
+import { json, LoaderFunctionArgs, type } from '@remix-run/node';
+import { Link, Outlet, useLoaderData } from '@remix-run/react';
+import { useEventStream } from '@remix-sse/client';
+
+import type { MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
@@ -26,7 +27,7 @@ export default function NewsIndex() {
   
   
   // By default this is a string[]
-  const greeting = useEventStream('/emitter', {returnLatestOnly: true})
+  const newsEmitter = useEventStream('/emitter', {returnLatestOnly: true, deserialize: (raw) => JSON.parse(raw) as NewsRecord})
 
 
   return (
@@ -35,7 +36,7 @@ export default function NewsIndex() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
           Latest News
         </h1>
-        <div>Events: {greeting}</div>
+        {newsEmitter && <div>New: {newsEmitter.title}</div>}
         <Link
           to="/news/new"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"

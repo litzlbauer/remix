@@ -1,30 +1,22 @@
-import { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
-import { EventStream } from '@remix-sse/server'
 import { getNews } from '~/data';
 
-
+import { LoaderFunction, LoaderFunctionArgs } from '@remix-run/node';
+import { EventStream } from '@remix-sse/server';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let news = await getNews();
   
   // Return the EventStream from your route loader
   return new EventStream(request, (send) => {
-    // In the init function, setup your SSE Event source
-    // This can be any asynchronous data source, that will send
-    // events to the client periodically
-
-    // Here we will just use a `setInterval`
-
-    ;
-    let count = news.length;
+    let lastPublishedAt = news.length > 0 ? news[0].publishedAt : null;
 
     const interval = setInterval(async () => {
       news = await getNews();
+      let publishedAt = news.length > 0 ?news[0].publishedAt : null;
 
-      if (news.length !== count) {
-        count = news.length;
-        // You can send events to the client via the `send` function
-        send(JSON.stringify({ hello: 'world + ' + count}))
+      if (lastPublishedAt && publishedAt && lastPublishedAt < publishedAt) {
+        lastPublishedAt = publishedAt;
+        send(JSON.stringify( news[0] ))
       }
     }, 1000)
 

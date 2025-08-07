@@ -1,14 +1,9 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import './tailwind.css';
 
-import "./tailwind.css";
-import { useEventStream } from "@remix-sse/client";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
+import { useEventStream } from '@remix-sse/client';
+
+import type { LinksFunction } from "@remix-run/node";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -57,7 +52,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   News
                 </a>
               </li>
-              <li>SSE</li>
             </ul>
           </div>
         </nav>
